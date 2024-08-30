@@ -1,5 +1,4 @@
-﻿using GraphQL;
-using GraphQL.Client.Http;
+﻿using GraphQL.Client.Http;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,10 +17,30 @@ namespace RestGraphQLgRPC.Client.Api.Controllers
             _client = client;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ExecuteQuery([FromBody] GraphQLRequest queryRequest)
+        {
+            var request = new GraphQL.GraphQLRequest
+            {
+                Query = queryRequest.Query,
+                Variables = queryRequest.Variables
+            };
+
+            // Envie a consulta para o cliente GraphQL
+            var response = await _client.SendQueryAsync<GraphQLResponseData>(request);
+
+            if (response.Errors != null && response.Errors.Any())
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response.Data);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetMovies()
         {
-            var request = new GraphQLRequest
+            var request = new GraphQL.GraphQLRequest
             {
                 Query = """
                             query {
@@ -38,10 +57,10 @@ namespace RestGraphQLgRPC.Client.Api.Controllers
             return Ok(response.Data.Movies);
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<IActionResult> AddMovie(Movie movie)
         {
-            var request = new GraphQLRequest
+            var request = new GraphQL.GraphQLRequest
             {
                 Query = """
                             mutation($title: String!, $director: String!, $releaseYear: Int!) {

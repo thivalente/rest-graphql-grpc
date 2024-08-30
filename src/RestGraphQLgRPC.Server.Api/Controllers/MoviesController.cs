@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
 using RestGraphQLgRPC.Server.Api.Data;
-using RestGraphQLgRPC.Server.Api.Models;
 
 namespace RestGraphQLgRPC.Server.Api.Controllers
 {

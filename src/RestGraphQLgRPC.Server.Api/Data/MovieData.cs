@@ -1,6 +1,4 @@
-﻿using RestGraphQLgRPC.Server.Api.Models;
-
-namespace RestGraphQLgRPC.Server.Api.Data
+﻿namespace RestGraphQLgRPC.Server.Api.Data
 {
     public static class MovieData
     {
